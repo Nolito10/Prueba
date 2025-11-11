@@ -1,0 +1,140 @@
+<!-- src/app/features/forecast-detail/forecast-detail.component.html -->
+
+<div class="forecast-container">
+  <div class="container-fluid py-4 px-3 px-lg-4">
+    
+    <!-- Encabezado Centrado -->
+    <div class="forecast-header text-center mb-4">
+      <div class="header-icon mb-3">
+        <i class="bi bi-calendar-week text-primary" style="font-size: 2.25rem;" aria-hidden="true"></i>
+      </div>
+      <h1 class="page-title h2 fw-bold mb-2">
+        Pronóstico de 5 Días
+      </h1>
+      <p class="page-subtitle text-muted fs-6 mb-0">
+        Predicción meteorológica para el código: <strong class="text-primary">{{ zipCode() }}</strong>
+      </p>
+    </div>
+
+    <!-- Estado: Cargando -->
+    @if (loading()) {
+      <div class="loading-state text-center py-5">
+        <div class="spinner-wrapper mb-4">
+          <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="visually-hidden">Cargando...</span>
+          </div>
+        </div>
+        <h3 class="h5 mb-2">Cargando pronóstico...</h3>
+        <p class="text-muted mb-0">Obteniendo los datos meteorológicos</p>
+      </div>
+    }
+
+    <!-- Estado: Error -->
+    @if (error()) {
+      <div class="error-state py-4">
+        <div class="alert alert-danger d-flex align-items-start shadow-sm mx-auto" style="max-width: 600px;" role="alert">
+          <i class="bi bi-exclamation-triangle-fill shrink me-3 fs-4" aria-hidden="true"></i>
+          <div class="grow">
+            <h4 class="alert-heading fw-bold mb-2">Error al Cargar el Pronóstico</h4>
+            <p class="mb-3">{{ error() }}</p>
+            <button 
+              class="btn btn-danger btn-sm"
+              (click)="refresh()"
+              aria-label="Intentar cargar el pronóstico nuevamente">
+              <i class="bi bi-arrow-clockwise me-2" aria-hidden="true"></i>
+              Intentar Nuevamente
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Datos del Pronóstico -->
+    @if (forecast() && !loading() && !error()) {
+      <div class="forecast-grid">
+        <div class="row g-3 g-lg-3 justify-content-center">
+          @for (day of forecast()!.days; track day.date) {
+            <div class="col-12 col-sm-6 col-lg-4 col-xl">
+              <article class="forecast-card card h-100 border-0">
+                <!-- Encabezado del Día -->
+                <div class="card-header text-center py-3">
+                  <h2 class="day-name h6 fw-bold mb-1">
+                    {{ getDayName(day.date) }}
+                  </h2>
+                  <p class="date mb-0 small">
+                    {{ formatDate(day.date) }}
+                  </p>
+                </div>
+                
+                <!-- Cuerpo: Clima Principal -->
+                <div class="card-body text-center px-3 py-3">
+                  <div class="weather-icon-wrapper mb-3">
+                    <img 
+                      [src]="getIconUrl(day.icon)" 
+                      [alt]="'Icono del clima: ' + day.description"
+                      class="weather-icon img-fluid"
+                      loading="lazy"
+                      width="90"
+                      height="90">
+                  </div>
+                  
+                  <p class="description text-capitalize mb-3 fw-medium">
+                    {{ day.description }}
+                  </p>
+                  
+                  <!-- Rango de Temperatura -->
+                  <div class="temperature-range mb-2">
+                    <span class="temp-max fw-bold fs-4">
+                      {{ day.tempMax }}°
+                    </span>
+                    <span class="temp-separator mx-2">/</span>
+                    <span class="temp-min fw-semibold fs-5">
+                      {{ day.tempMin }}°
+                    </span>
+                  </div>
+                  <p class="temp-label small mb-0 text-muted">
+                    Máx / Mín
+                  </p>
+                </div>
+                
+                <!-- Pie: Detalles -->
+                <div class="card-footer py-3">
+                  <div class="details-list">
+                    <!-- Humedad -->
+                    <div class="detail-row d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
+                      <div class="d-flex align-items-center">
+                        <i class="bi bi-droplet-fill me-2 text-primary" aria-hidden="true"></i>
+                        <span class="detail-label small fw-semibold">Humedad</span>
+                      </div>
+                      <span class="detail-value fw-bold text-primary">{{ day.humidity }}%</span>
+                    </div>
+                    
+                    <!-- Viento -->
+                    <div class="detail-row d-flex justify-content-between align-items-center">
+                      <div class="d-flex align-items-center">
+                        <i class="bi bi-wind me-2 text-success" aria-hidden="true"></i>
+                        <span class="detail-label small fw-semibold">Viento</span>
+                      </div>
+                      <span class="detail-value fw-bold text-success">{{ day.windSpeed }} km/h</span>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Botón Regresar Pequeño y Moderno (Al Final) -->
+    <div class="back-button-wrapper text-center mt-4 pt-2">
+      <button 
+        class="btn btn-back-small"
+        (click)="goBack()"
+        aria-label="Regresar a la vista de clima actual">
+        <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>
+        Regresar
+      </button>
+    </div>
+  </div>
+</div>

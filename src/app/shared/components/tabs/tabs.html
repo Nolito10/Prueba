@@ -1,0 +1,28 @@
+<!-- src/app/shared/components/tabs/tabs.html -->
+
+<div class="tabs-container">
+  <ul class="nav nav-tabs" role="tablist">
+    @for (tab of tabs; track tab.id) {
+      <li class="nav-item" role="presentation">
+        <button 
+          class="nav-link"
+          [class.active]="isSelected(tab.id)"
+          (click)="selectTab(tab.id)"
+          type="button"
+          role="tab"
+          [attr.aria-selected]="isSelected(tab.id)">
+          {{ tab.title }}
+          @if (tab.closable !== false) {
+            <span class="close-btn" (click)="closeTab(tab.id, $event)" aria-label="Close tab">
+              &times;
+            </span>
+          }
+        </button>
+      </li>
+    }
+  </ul>
+
+  <div class="tab-content">
+    <ng-content></ng-content>
+  </div>
+</div>

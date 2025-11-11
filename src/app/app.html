@@ -1,0 +1,55 @@
+
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand d-flex align-items-center" routerLink="/">
+      <span class="brand-icon me-2" aria-hidden="true">🌤️</span>
+      <span class="brand-text fw-bold">Pronóstico Clima</span>
+    </a>
+    
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto gap-2">
+        <li class="nav-item">
+          <a class="nav-link px-3 py-2 rounded" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <i class="bi bi-house-door-fill me-2" aria-hidden="true"></i>
+            Inicio
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link px-3 py-2 rounded" routerLink="/weather" routerLinkActive="active">
+            <i class="bi bi-cloud-sun-fill me-2" aria-hidden="true"></i>
+            Clima
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+  <router-outlet></router-outlet>
+</main>
+
+<!-- FOOTER STICKY AL FONDO Y CENTRADO -->
+<footer class="footer mt-auto py-3">
+  <div class="container">
+    <div class="text-center">
+      <!-- Logo y nombre arriba -->
+      <div class="mb-2">
+        <span class="footer-icon me-2" aria-hidden="true">🌤️</span>
+        <span class="text-white fw-semibold">Pronóstico Clima</span>
+      </div>
+      
+      <!-- Copyright abajo -->
+      <div>
+        <span class="text-white-50 small">
+          &copy; 2025 Desarrollado por <strong class="text-white">Norlan Reyes</strong>
+        </span>
+      </div>
+    </div>
+  </div>
+</footer>

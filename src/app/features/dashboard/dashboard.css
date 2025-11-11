@@ -1,0 +1,400 @@
+
+
+/* ============================================
+   ESTILOS GENERALES DEL DASHBOARD
+   ============================================ */
+
+.dashboard-container {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #f8f9fa 0%, #ffffff 100%);
+}
+
+/* ============================================
+   SECCIÓN HERO
+   ============================================ */
+
+.hero-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect fill="rgba(255,255,255,0.05)" width="50" height="50"/></svg>');
+  opacity: 0.3;
+}
+
+.hero-section .container {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-section h1 {
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.hero-section .lead {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.min-vh-50 {
+  min-height: 50vh;
+}
+
+/* ============================================
+   TARJETAS
+   ============================================ */
+
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-header {
+  border-bottom: none;
+}
+
+.rounded-4 {
+  border-radius: 1rem !important;
+}
+
+/* ============================================
+   FORMULARIO
+   ============================================ */
+
+.location-form .input-group-text {
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+}
+
+.location-form .form-control {
+  border-color: #dee2e6;
+  padding: 0.75rem 1rem;
+  font-size: 1.125rem;
+}
+
+.location-form .form-control:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
+}
+
+.location-form .input-group-text {
+  font-size: 1.25rem;
+}
+
+/* Estilos para estados de validación */
+.form-control[aria-invalid="true"] {
+  border-color: #ffc107;
+}
+
+.form-control[aria-invalid="true"]:focus {
+  border-color: #ffc107;
+  box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+}
+
+/* ============================================
+   BOTONES
+   ============================================ */
+
+.btn {
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #5568d3 0%, #63408a 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:focus {
+  box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.5);
+}
+
+.btn-primary:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.btn-outline-primary {
+  color: #667eea;
+  border-color: #667eea;
+}
+
+.btn-outline-primary:hover {
+  background-color: #667eea;
+  border-color: #667eea;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.btn-outline-primary:focus {
+  box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.5);
+}
+
+/* ============================================
+   ALERTAS
+   ============================================ */
+
+.alert {
+  border-radius: 0.5rem;
+  border: none;
+  font-weight: 500;
+}
+
+.alert-warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+/* ============================================
+   SECCIÓN DE CARACTERÍSTICAS
+   ============================================ */
+
+.features-section {
+  background-color: #f8f9fa;
+}
+
+.feature-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 1rem !important;
+  height: 100%;
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15) !important;
+}
+
+.feature-icon-wrapper {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+}
+
+/* ============================================
+   SECCIÓN INFORMATIVA
+   ============================================ */
+
+.info-section {
+  padding: 4rem 0;
+}
+
+.info-section ul li {
+  font-size: 1.125rem;
+}
+
+/* ============================================
+   ICONOS BOOTSTRAP
+   ============================================ */
+
+.bi {
+  vertical-align: middle;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+/* Tablets */
+@media (max-width: 991.98px) {
+  .display-3 {
+    font-size: 2.5rem;
+  }
+  
+  .feature-card .card-body {
+    padding: 2rem !important;
+  }
+  
+  .min-vh-50 {
+    min-height: auto;
+  }
+}
+
+/* Móviles */
+@media (max-width: 767.98px) {
+  .hero-section {
+    padding: 2rem 0;
+  }
+  
+  .display-3 {
+    font-size: 2rem;
+  }
+  
+  .lead {
+    font-size: 1.125rem;
+  }
+  
+  .card-body {
+    padding: 1.5rem !important;
+  }
+  
+  .btn-lg {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .feature-icon {
+    width: 60px !important;
+    height: 60px !important;
+  }
+  
+  .feature-icon span {
+    font-size: 2rem !important;
+  }
+}
+
+/* Móviles pequeños */
+@media (max-width: 575.98px) {
+  .dashboard-container {
+    padding: 0;
+  }
+  
+  .hero-section .container {
+    padding: 1rem;
+  }
+  
+  .card {
+    border-radius: 0.75rem !important;
+  }
+  
+  .display-3 {
+    font-size: 1.75rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  h3 {
+    font-size: 1.25rem;
+  }
+}
+
+/* ============================================
+   ACCESIBILIDAD
+   ============================================ */
+
+/* Asegurar contraste adecuado para WCAG AA */
+.text-muted {
+  color: #6c757d !important;
+}
+
+/* Foco visible para navegación por teclado */
+.btn:focus,
+.form-control:focus,
+a:focus {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+/* Reducir animaciones para usuarios con preferencias de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .hover-lift:hover {
+    transform: none;
+  }
+  
+  .btn:hover {
+    transform: none;
+  }
+  
+  .feature-icon-wrapper {
+    animation: none;
+  }
+}
+
+/* Alto contraste para mejor legibilidad */
+@media (prefers-contrast: high) {
+  .card {
+    border: 2px solid #000;
+  }
+  
+  .btn-primary {
+    background: #0056b3;
+    border: 2px solid #000;
+  }
+  
+  .alert {
+    border: 2px solid currentColor;
+  }
+}
+
+/* ============================================
+   UTILIDADES PERSONALIZADAS
+   ============================================ */
+
+.bg-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.shadow-sm {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}
+
+.shadow {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.shadow-lg {
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+}
+
+/* ============================================
+   MEJORAS DE RENDIMIENTO
+   ============================================ */
+
+/* Usar will-change para animaciones suaves */
+.hover-lift,
+.btn,
+.card {
+  will-change: transform;
+}
+
+/* Optimizar renderizado de fuentes */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}

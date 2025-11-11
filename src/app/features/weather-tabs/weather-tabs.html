@@ -1,0 +1,244 @@
+
+
+<div class="weather-tabs-container">
+  <div class="container-fluid py-4 px-3 px-lg-4">
+    
+    <!-- Encabezado de la Página (Centrado) -->
+    <div class="page-header mb-4 text-center">
+      <h1 class="page-title h2 fw-bold mb-2">
+        <i class="bi bi-cloud-sun me-2 text-primary" aria-hidden="true"></i>
+        Condiciones Climáticas Actuales
+      </h1>
+      <p class="page-subtitle text-muted mb-0">
+        Selecciona una ubicación para ver la información meteorológica detallada
+      </p>
+    </div>
+
+    <!-- Contenedor de Pestañas -->
+    @if (tabs().length > 0) {
+      <div class="tabs-section">
+        <app-tabs 
+          [tabs]="tabs()" 
+          (tabSelected)="onTabSelected($event)"
+          (tabClosed)="onTabClosed($event)">
+          
+          @if (selectedWeather(); as data) {
+            <div class="weather-content">
+              
+              <!-- Estado: Cargando con spinner (solo para refresh manual) -->
+              @if (data.loading) {
+                <div class="loading-state text-center py-5">
+                  <div class="spinner-wrapper mb-4">
+                    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                      <span class="visually-hidden">Cargando...</span>
+                    </div>
+                  </div>
+                  <h4 class="mb-2">Actualizando información</h4>
+                  <p class="text-muted mb-0">Obteniendo los datos meteorológicos más recientes...</p>
+                </div>
+              }
+
+              <!-- Estado: Error -->
+              @if (data.error && !data.loading) {
+                <div class="error-state py-4">
+                  <div class="alert alert-danger d-flex align-items-start shadow-sm" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill shrink me-3 fs-4" aria-hidden="true"></i>
+                    <div class="grow">
+                      <h5 class="alert-heading fw-bold mb-2">Error al Cargar los Datos</h5>
+                      <p class="mb-3">{{ data.error }}</p>
+                      <button 
+                        class="btn btn-danger"
+                        (click)="refreshWeather(data.zipCode)"
+                        aria-label="Intentar cargar los datos nuevamente">
+                        <i class="bi bi-arrow-clockwise me-2" aria-hidden="true"></i>
+                        Intentar Nuevamente
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              }
+
+              <!-- Estado: Sin datos aún (cargando silenciosamente desde caché) -->
+              @if (!data.weather && !data.loading && !data.error) {
+                <div class="initial-loading-state text-center py-5">
+                  <div class="spinner-wrapper mb-4">
+                    <div class="spinner-border spinner-border-sm text-primary" role="status">
+                      <span class="visually-hidden">Cargando...</span>
+                    </div>
+                  </div>
+                  <p class="text-muted mb-0">Recuperando información meteorológica...</p>
+                </div>
+              }
+
+              <!-- Estado: Datos cargados exitosamente -->
+              @if (data.weather && !data.loading && !data.error) {
+                <div class="weather-data-container">
+                  <div class="row g-4 justify-content-center">
+                    
+                    <!-- Columna Principal: Clima Actual (Centrada) -->
+                    <div class="col-12 col-lg-5 col-xl-4">
+                      <div class="weather-card card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4 p-lg-5 text-center">
+                          <!-- Información Principal del Clima -->
+                          <div class="weather-main mb-4">
+                            <div class="weather-icon-wrapper mb-4">
+                              <img 
+                                [src]="getIconUrl(data.weather.icon)" 
+                                [alt]="'Icono del clima: ' + data.weather.description"
+                                class="weather-icon img-fluid mx-auto d-block"
+                                loading="lazy"
+                                width="120"
+                                height="120">
+                            </div>
+                            <div class="temperature-display">
+                              <div class="temperature display-3 fw-bold text-primary mb-2">
+                                {{ data.weather.temp }}°C
+                              </div>
+                              <p class="description text-capitalize text-muted mb-0 fs-5">
+                                {{ data.weather.description }}
+                              </p>
+                            </div>
+                          </div>
+
+                          <!-- Información de la Ubicación -->
+                          <div class="location-info pt-4 border-top">
+                            <h3 class="city-name h4 fw-bold mb-2">
+                              <i class="bi bi-geo-alt-fill text-primary me-2" aria-hidden="true"></i>
+                              {{ data.weather.cityName }}
+                            </h3>
+                            <p class="zip-code text-muted mb-0">
+                              <strong>Código Postal:</strong> {{ data.zipCode }}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Columna Secundaria: Detalles y Acciones (Centrada) -->
+                    <div class="col-12 col-lg-5 col-xl-4">
+                      <div class="details-actions-container h-100 d-flex flex-column">
+                        
+                        <!-- Detalles Meteorológicos -->
+                        <div class="weather-details card border-0 shadow-sm grow mb-3">
+                          <div class="card-body p-4">
+                            <h4 class="card-title h5 fw-bold mb-4 d-flex align-items-center justify-content-center">
+                              <i class="bi bi-info-circle-fill text-info me-2" aria-hidden="true"></i>
+                              Detalles Meteorológicos
+                            </h4>
+                            
+                            <div class="details-grid">
+                              <!-- Detalle: Humedad -->
+                              <div class="detail-item d-flex justify-content-between align-items-center p-3 bg-light rounded-3 mb-3">
+                                <div class="d-flex align-items-center">
+                                  <div class="detail-icon me-3">
+                                    <i class="bi bi-droplet-fill text-primary fs-3" aria-hidden="true"></i>
+                                  </div>
+                                  <span class="detail-label fw-semibold">Humedad</span>
+                                </div>
+                                <span class="detail-value fs-4 fw-bold text-primary">
+                                  {{ data.weather.humidity }}%
+                                </span>
+                              </div>
+
+                              <!-- Detalle: Velocidad del Viento -->
+                              <div class="detail-item d-flex justify-content-between align-items-center p-3 bg-light rounded-3">
+                                <div class="d-flex align-items-center">
+                                  <div class="detail-icon me-3">
+                                    <i class="bi bi-wind text-success fs-3" aria-hidden="true"></i>
+                                  </div>
+                                  <span class="detail-label fw-semibold">Velocidad del Viento</span>
+                                </div>
+                                <span class="detail-value fs-4 fw-bold text-success">
+                                  {{ data.weather.windSpeed }} km/h
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Botones de Acción (CENTRADOS) -->
+                        <div class="actions-card card border-0 shadow-sm">
+                          <div class="card-body p-3 text-center">
+                            <h5 class="card-title h6 fw-bold mb-3">Acciones</h5>
+                            <div class="d-flex flex-column flex-sm-row justify-content-center gap-2">
+                              <!-- Botón Ver Pronóstico (Tamaño Normal) -->
+                              <button 
+                                class="btn btn-primary"
+                                (click)="viewForecast(data.zipCode)"
+                                aria-label="Ver pronóstico extendido de 5 días">
+                                <i class="bi bi-calendar-range me-1" aria-hidden="true"></i>
+                                Ver Pronóstico
+                              </button>
+
+                              <!-- Botón Actualizar (Tamaño Normal) -->
+                              <button 
+                                class="btn btn-outline-secondary"
+                                (click)="refreshWeather(data.zipCode)"
+                                [disabled]="data.loading"
+                                [attr.aria-disabled]="data.loading ? 'true' : 'false'"
+                                aria-label="Actualizar datos del clima">
+                                @if (data.loading) {
+                                  <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                                  <span>Actualizando...</span>
+                                } @else {
+                                  <i class="bi bi-arrow-clockwise me-1" aria-hidden="true"></i>
+                                  <span>Actualizar</span>
+                                }
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </app-tabs>
+      </div>
+    } @else {
+      <!-- Estado Vacío: No hay ubicaciones -->
+      <div class="empty-state card border-0 shadow-sm">
+        <div class="card-body text-center py-5 px-4">
+          <div class="empty-state-icon mb-4">
+            <i class="bi bi-inbox display-1 text-muted" aria-hidden="true"></i>
+          </div>
+          <h3 class="h4 fw-bold mb-3">No hay ubicaciones agregadas</h3>
+          <p class="text-muted mb-4 fs-5">
+            Agrega tu primera ubicación desde la página de inicio para comenzar a ver los datos meteorológicos
+          </p>
+          <button 
+            class="btn btn-primary btn-lg px-5"
+            routerLink="/"
+            aria-label="Ir a la página de inicio para agregar ubicación">
+            <i class="bi bi-plus-circle me-2" aria-hidden="true"></i>
+            Agregar Primera Ubicación
+          </button>
+          
+          <!-- Características informativas -->
+          <div class="row g-3 mt-5 pt-4 border-top justify-content-center">
+            <div class="col-12 col-md-4">
+              <div class="feature-info">
+                <i class="bi bi-thermometer-half text-primary fs-2 mb-2" aria-hidden="true"></i>
+                <p class="small text-muted mb-0">Condiciones actuales en tiempo real</p>
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="feature-info">
+                <i class="bi bi-calendar3 text-success fs-2 mb-2" aria-hidden="true"></i>
+                <p class="small text-muted mb-0">Pronóstico extendido de 5 días</p>
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="feature-info">
+                <i class="bi bi-collection text-info fs-2 mb-2" aria-hidden="true"></i>
+                <p class="small text-muted mb-0">Múltiples ubicaciones organizadas</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
